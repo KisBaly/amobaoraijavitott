@@ -1,0 +1,93 @@
+var div, sor, oszlop;
+var leptet = 0;
+var matrix=[];
+
+var iranyvektorok = [ [-1,0],[1,0],//fuggoleges
+                      [0,1],[0,-1],//vizszintes
+                      [-1,1],[1,-1],//foatlo    
+                      [-1,-1],[1,1] //mellekatlo    
+
+
+                
+                    ];
+    function jatekosVane(aktsor,aktoszlop,jatekos)
+    {
+        return matrix[aktsor][aktoszlop] == jatekos;
+    }
+    function matrixSzelet(aktsor,aktoszlop)
+    {
+        return aktsor<0 || aktsor >= sor || aktoszlop < 0|| aktoszlop >= oszlop;
+    }                    
+    function megszamol(irany,jatekos,startx,starty)
+            {
+                    let db =0;
+                    while(!matrixSzelet(startx+iranyvektorok[irany][0]*db,starty+iranyvektorok[irany][1]*db) && 
+                    !jatekosVane(startx+iranyvektorok[irany][0]*db,starty+iranyvektorok[irany][1]*db,jatekos))
+                    {
+                        db++;
+                    }
+                    return db;
+            }
+    function uresMatrix()
+
+    {
+        for(var i = 0; i < sor; i++)
+        {
+            sorx=[];
+            for(var j = 0; j < oszlop; j++)
+            {
+                sorx.push(0);
+            }
+            matrix.push(sorx);
+        }
+        console.log(matrix);
+    }
+
+
+function kattint(td){
+    if(td.TablaGeneralasinnerHTML == "")
+    {
+        let jatekos;
+        if(leptet % 2 ==0){
+           
+                td.innerHTML = "X";
+                matrix[td.dataset.sor][td.dataset.oszlop]="X";
+            }
+        
+        else{
+            
+                td.innerHTML = "O";
+                matrix[td.dataset.sor][td.dataset.oszlop]="O";
+        }
+        for(let i = 0; i < iranyvektorok; i++)
+        {
+            console.log(megszamol(i,jatekos,Number))
+        }
+        leptet++;
+    }
+   
+
+}
+
+function TablaGeneralas(){
+    sor = document.getElementById("sor").value;
+    oszlop = document.getElementById("oszlop").value;
+    div = document.getElementById("eredmeny");
+    div.innerHTML = "";
+    
+    console.log(sor, oszlop);
+    uresMatrix();
+    var table = document.createElement("table");
+    for (let i = 0; i < sor; i++){
+        let tr = document.createElement("tr");
+        for (let j = 0; j < oszlop; j++) {
+            let td = document.createElement("td");
+            td.setAttribute("onclick", "kattint(this)");
+            td.dataset.sor=i;
+            td.dataset.oszlop=j;
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+    div.appendChild(table);
+}
